@@ -1,1 +1,1676 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran QRIS - CIREBON QRIS RUN 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --green-deep: #0D5A2D;
+            --green-mid: #1B7A3D;
+            --green-light: #27A84A;
+            --gold: #D4A017;
+            --gold-light: #F0C75E;
+            --gold-pale: #FFF8E1;
+            --cream: #FFFDF5;
+            --white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            --red: #DC2626;
+            --orange: #EA580C;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle at 30% 30%, rgba(27,122,61,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(212,160,23,0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-back {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            border: 1.5px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 14px;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .header-back:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .header-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.2;
+        }
+
+        .header-text p {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+        }
+
+        /* ===== TIMER BAR ===== */
+        .timer-bar {
+            background: linear-gradient(90deg, #FEF3C7, #FDE68A);
+            border-bottom: 2px solid var(--gold);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timer-icon {
+            width: 28px; height: 28px;
+            background: var(--red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 12px;
+            animation: pulseDot 1s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.15); }
+        }
+
+        .timer-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: #92400E;
+        }
+
+        .timer-countdown {
+            font-family: 'Plus Jakarta Sans', monospace;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--red);
+            min-width: 70px;
+            text-align: center;
+        }
+
+        /* ===== MAIN ===== */
+        .main-container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 24px 16px 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== CARD BASE ===== */
+        .info-card {
+            background: var(--white);
+            border-radius: 14px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(27,122,61,0.06);
+            padding: 20px;
+            margin-bottom: 16px;
+            animation: fadeUp 0.5s ease-out both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1.5px dashed var(--border);
+        }
+
+        .info-card-header .left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card-header .icon-circle {
+            width: 32px; height: 32px;
+            background: rgba(27,122,61,0.08);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-mid);
+            font-size: 14px;
+        }
+
+        .info-card-header h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .info-card-header .badge-status {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #FEF3C7;
+            color: #92400E;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 13px;
+        }
+
+        .detail-row .label { color: var(--text-muted); font-weight: 500; }
+        .detail-row .value {
+            font-weight: 600; color: var(--text-dark);
+            text-align: right; max-width: 60%; word-break: break-word;
+        }
+
+        .detail-row.total {
+            border-top: 2px solid var(--green-mid);
+            margin-top: 10px; padding-top: 12px;
+        }
+
+        .detail-row.total .label { font-weight: 700; color: var(--green-deep); }
+        .detail-row.total .value { font-size: 20px; font-weight: 800; color: var(--green-mid); }
+
+        /* ===== QRIS CARD ===== */
+        .qris-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(27,122,61,0.06);
+            padding: 28px 20px;
+            text-align: center;
+            margin-bottom: 16px;
+            animation: fadeUp 0.5s ease-out 0.15s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qris-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green-mid), var(--gold), var(--green-mid));
+        }
+
+        .qris-label {
+            font-size: 12px; font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .qris-img-wrapper {
+            width: 240px; height: 240px;
+            margin: 0 auto 16px;
+            background: var(--white);
+            border: 3px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            position: relative;
+        }
+
+        .qris-img-wrapper img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .qris-img-wrapper .scan-line {
+            position: absolute;
+            top: 0; left: 12px; right: 12px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--green-mid), transparent);
+            border-radius: 2px;
+            animation: scanMove 2.5s ease-in-out infinite;
+        }
+
+        @keyframes scanMove {
+            0% { top: 12px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: calc(100% - 15px); opacity: 0; }
+        }
+
+        .qris-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px; font-weight: 800;
+            color: var(--green-deep);
+            margin-bottom: 4px;
+        }
+
+        .qris-amount-label {
+            font-size: 11px; color: var(--text-muted);
+            font-weight: 500; margin-bottom: 18px;
+        }
+
+        /* ===== UPLOAD CARD ===== */
+        .upload-card {
+            background: var(--white);
+            border-radius: 14px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(27,122,61,0.06);
+            padding: 20px;
+            margin-bottom: 16px;
+            animation: fadeUp 0.5s ease-out 0.3s both;
+        }
+
+        .upload-card .section-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .upload-card .section-head .icon-circle {
+            width: 32px; height: 32px;
+            background: rgba(27,122,61,0.08);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-mid);
+            font-size: 14px;
+        }
+
+        .upload-card .section-head h3 {
+            font-size: 13px; font-weight: 700; color: var(--text-dark);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            padding: 28px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: #FAFAFA;
+        }
+
+        .upload-area:hover {
+            border-color: var(--green-mid);
+            background: rgba(27,122,61,0.02);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--green-light);
+            background: rgba(27,122,61,0.06);
+            transform: scale(1.01);
+        }
+
+        .upload-area.has-file {
+            border-color: var(--green-mid);
+            border-style: solid;
+            background: rgba(27,122,61,0.03);
+            padding: 16px;
+        }
+
+        .upload-area input[type="file"] {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .upload-icon {
+            width: 52px; height: 52px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, rgba(27,122,61,0.08), rgba(27,122,61,0.15));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--green-mid);
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover .upload-icon {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(27,122,61,0.15);
+        }
+
+        .upload-text-main {
+            font-size: 14px; font-weight: 700;
+            color: var(--green-mid);
+            margin-bottom: 4px;
+        }
+
+        .upload-text-sub {
+            font-size: 11px; color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Preview file */
+        .upload-preview {
+            display: none;
+            align-items: center;
+            gap: 14px;
+            text-align: left;
+        }
+
+        .upload-preview.show { display: flex; }
+
+        .upload-preview .thumb {
+            width: 72px; height: 72px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            flex-shrink: 0;
+            background: #f3f4f6;
+        }
+
+        .upload-preview .file-info {
+            flex: 1; min-width: 0;
+        }
+
+        .upload-preview .file-name {
+            font-size: 13px; font-weight: 700;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+
+        .upload-preview .file-size {
+            font-size: 11px; color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .upload-preview .btn-remove {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 12px;
+            border: 1px solid #FECACA;
+            border-radius: 6px;
+            background: #FEF2F2;
+            color: var(--red);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .upload-preview .btn-remove:hover {
+            background: #FEE2E2;
+            border-color: #FCA5A5;
+        }
+
+        .upload-default { display: block; }
+        .upload-area.has-file .upload-default { display: none; }
+
+        .upload-error {
+            font-size: 11px; color: var(--red);
+            margin-top: 8px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .upload-error.show { display: flex; }
+
+        /* ===== STEPS CARD ===== */
+        .steps-card {
+            background: var(--white);
+            border-radius: 14px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            padding: 20px;
+            margin-bottom: 16px;
+            animation: fadeUp 0.5s ease-out 0.4s both;
+        }
+
+        .steps-card h3 {
+            font-size: 14px; font-weight: 700;
+            color: var(--green-deep);
+            margin-bottom: 14px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .steps-card h3 i { color: var(--green-mid); }
+
+        .step-item {
+            display: flex; gap: 12px;
+            align-items: flex-start; margin-bottom: 12px;
+        }
+        .step-item:last-child { margin-bottom: 0; }
+
+        .step-num {
+            width: 24px; height: 24px;
+            background: var(--green-mid);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 800;
+            flex-shrink: 0; margin-top: 1px;
+        }
+
+        .step-text {
+            font-size: 12.5px; color: var(--text-dark); line-height: 1.6;
+        }
+        .step-text strong { color: var(--green-deep); }
+
+        /* ===== WARNING ===== */
+        .warning-card {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex; gap: 10px;
+            align-items: flex-start; margin-bottom: 16px;
+            animation: fadeUp 0.5s ease-out 0.5s both;
+        }
+
+        .warning-card i {
+            color: var(--red); font-size: 16px;
+            margin-top: 1px; flex-shrink: 0;
+        }
+
+        .warning-card p {
+            font-size: 12px; color: #991B1B; line-height: 1.6;
+        }
+
+        /* ===== CHECKBOX ===== */
+        .confirm-section {
+            margin-bottom: 16px;
+            animation: fadeUp 0.5s ease-out 0.55s both;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px 18px;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-wrapper:hover {
+            border-color: rgba(27,122,61,0.3);
+            background: rgba(27,122,61,0.01);
+        }
+
+        .checkbox-wrapper.checked {
+            border-color: var(--green-mid);
+            background: rgba(27,122,61,0.03);
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            display: none;
+        }
+
+        .custom-check {
+            width: 22px; height: 22px;
+            border: 2px solid #D1D5DB;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 12px;
+            color: transparent;
+        }
+
+        .checkbox-wrapper.checked .custom-check {
+            background: var(--green-mid);
+            border-color: var(--green-mid);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+
+        .checkbox-label {
+            font-size: 12.5px;
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .checkbox-label strong { color: var(--green-deep); }
+
+        .checkbox-error {
+            font-size: 11px; color: var(--red);
+            margin-top: 6px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            padding-left: 4px;
+        }
+
+        .checkbox-error.show { display: flex; }
+
+        /* ===== BUTTONS ===== */
+        .btn-cta {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-light) 100%);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(27,122,61,0.35);
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.5s ease-out 0.6s both;
+        }
+
+        .btn-cta::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-cta:not(:disabled):hover::before { left: 100%; }
+        .btn-cta:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 28px rgba(27,122,61,0.45);
+        }
+        .btn-cta:not(:disabled):active { transform: translateY(0) scale(0.98); }
+
+        .btn-cta:disabled {
+            background: #D1D5DB;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-cta:disabled::before { display: none; }
+
+        .btn-cancel {
+            width: 100%;
+            padding: 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 10px;
+            animation: fadeUp 0.5s ease-out 0.65s both;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--red);
+            color: var(--red);
+            background: #FEF2F2;
+        }
+
+        /* ========================================
+           PREMIUM LOADING OVERLAY — 3 MENIT
+           ======================================== */
+        .premium-loading {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, #0A1F12 0%, #0D3B1E 40%, #0A1F12 100%);
+            overflow: hidden;
+        }
+
+        .premium-loading.show {
+            display: flex;
+            animation: loadingFadeIn 0.6s ease-out;
+        }
+
+        @keyframes loadingFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Partikel latar belakang */
+        .loading-particles {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: rgba(39, 168, 74, 0.4);
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Lingkaran cahaya di belakang */
+        .loading-glow {
+            position: absolute;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        .loading-glow.g1 {
+            background: var(--green-light);
+            top: 30%; left: 20%;
+        }
+
+        .loading-glow.g2 {
+            background: var(--gold);
+            bottom: 20%; right: 15%;
+            animation-delay: 2s;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.12; }
+            50% { transform: scale(1.3); opacity: 0.2; }
+        }
+
+        /* Konten loading */
+        .loading-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 24px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* Logo animasi */
+        .loading-logo {
+            width: 56px; height: 56px;
+            margin: 0 auto 28px;
+            position: relative;
+        }
+
+        .loading-logo-ring {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 3px solid transparent;
+            border-top-color: var(--green-light);
+            border-radius: 50%;
+            animation: ringSpin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        }
+
+        .loading-logo-ring:nth-child(2) {
+            width: 44px; height: 44px;
+            top: 6px; left: 6px;
+            border-top-color: var(--gold-light);
+            animation-direction: reverse;
+            animation-duration: 1.8s;
+        }
+
+        .loading-logo-ring:nth-child(3) {
+            width: 32px; height: 32px;
+            top: 12px; left: 12px;
+            border-top-color: rgba(255,255,255,0.4);
+            animation-duration: 2.5s;
+        }
+
+        .loading-logo-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px; height: 14px;
+            background: var(--green-light);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(39, 168, 74, 0.6);
+            animation: centerPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes ringSpin { to { transform: rotate(360deg); } }
+        @keyframes centerPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 20px rgba(39,168,74,0.6); }
+            50% { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 35px rgba(39,168,74,0.9); }
+        }
+
+        /* Judul */
+        .loading-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .loading-subtitle {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        /* Progress bar premium */
+        .progress-container {
+            margin-bottom: 24px;
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--green-light), var(--gold-light), var(--green-light));
+            background-size: 200% 100%;
+            animation: shimmer 2s linear infinite;
+            transition: width 1s linear;
+            position: relative;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 30px; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+            border-radius: 10px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .progress-percent {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--white);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .progress-percent span {
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .progress-time {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+            text-align: right;
+            padding-top: 6px;
+        }
+
+        /* Step text */
+        .loading-steps {
+            text-align: left;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+        }
+
+        .loading-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.3);
+            transition: all 0.5s ease;
+        }
+
+        .loading-step.active {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .loading-step.done {
+            color: var(--green-light);
+        }
+
+        .loading-step .step-icon {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            flex-shrink: 0;
+            transition: all 0.5s ease;
+        }
+
+        .loading-step.active .step-icon {
+            border-color: var(--gold-light);
+            color: var(--gold-light);
+            box-shadow: 0 0 12px rgba(240,199,94,0.3);
+            animation: stepPulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-step.done .step-icon {
+            background: var(--green-light);
+            border-color: var(--green-light);
+            color: var(--white);
+        }
+
+        @keyframes stepPulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(240,199,94,0.3); }
+            50% { box-shadow: 0 0 20px rgba(240,199,94,0.6); }
+        }
+
+        .loading-step .step-spinner {
+            display: none;
+            width: 12px; height: 12px;
+            border: 2px solid transparent;
+            border-top-color: var(--gold-light);
+            border-radius: 50%;
+            animation: ringSpin 0.8s linear infinite;
+        }
+
+        .loading-step.active .step-icon { display: none; }
+        .loading-step.active .step-spinner { display: block; }
+
+        .loading-step .step-check {
+            display: none;
+        }
+
+        .loading-step.done .step-spinner { display: none; }
+        .loading-step.done .step-check { display: block; }
+
+        /* Footer note */
+        .loading-note {
+            font-size: 10.5px;
+            color: rgba(255,255,255,0.25);
+            line-height: 1.6;
+        }
+
+        .loading-note i { margin-right: 4px; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+            position: relative; z-index: 1;
+        }
+        .footer a { color: var(--green-mid); text-decoration: none; font-weight: 600; }
+
+        /* ===== NO DATA ===== */
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            animation: fadeUp 0.5s ease-out both;
+        }
+        .no-data i { font-size: 48px; color: var(--border); margin-bottom: 16px; }
+        .no-data h2 { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .no-data p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+        .no-data a {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px; background: var(--green-mid); color: var(--white);
+            border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 14px;
+            transition: all 0.25s ease;
+        }
+        .no-data a:hover { background: var(--green-deep); }
+
+        @media (max-width: 480px) {
+            .qris-img-wrapper { width: 200px; height: 200px; }
+            .qris-amount { font-size: 24px; }
+            .loading-title { font-size: 18px; }
+            .progress-percent { font-size: 24px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <a href="index.html" class="header-back" aria-label="Kembali">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="header-text">
+            <h1>Pembayaran QRIS</h1>
+            <p>CIREBON QRIS RUN 2026</p>
+        </div>
+    </header>
+
+    <!-- TIMER -->
+    <div class="timer-bar">
+        <div class="timer-icon"><i class="fas fa-clock"></i></div>
+        <span class="timer-text">Selesaikan pembayaran dalam</span>
+        <span class="timer-countdown" id="timerDisplay">15:00</span>
+    </div>
+
+    <!-- MAIN -->
+    <main class="main-container" id="mainContent">
+        <!-- Diisi oleh JavaScript -->
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        TRIKARSA FEST 2026 &mdash; <a href="https://cirebonqrisrun.id" target="_blank">cirebonqrisrun.id</a>
+    </footer>
+
+    <!-- ===== PREMIUM LOADING OVERLAY ===== -->
+    <div class="premium-loading" id="premiumLoading">
+        <!-- Partikel -->
+        <div class="loading-particles" id="loadingParticles"></div>
+
+        <!-- Glow -->
+        <div class="loading-glow g1"></div>
+        <div class="loading-glow g2"></div>
+
+        <!-- Konten -->
+        <div class="loading-content">
+            <!-- Logo spinner -->
+            <div class="loading-logo">
+                <div class="loading-logo-ring"></div>
+                <div class="loading-logo-ring"></div>
+                <div class="loading-logo-ring"></div>
+                <div class="loading-logo-center"></div>
+            </div>
+
+            <h2 class="loading-title">Memverifikasi Pembayaran</h2>
+            <p class="loading-subtitle">CIREBON QRIS RUN 2026 &mdash; TRIKARSA FEST</p>
+
+            <!-- Progress -->
+            <div class="progress-container">
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-info">
+                    <div class="progress-percent" id="progressPercent">0<span>%</span></div>
+                    <div class="progress-time" id="progressTime">3:00 tersisa</div>
+                </div>
+            </div>
+
+            <!-- Steps -->
+            <div class="loading-steps">
+                <div class="loading-step" id="lstep1">
+                    <div class="step-icon">1</div>
+                    <div class="step-spinner"></div>
+                    <i class="fas fa-check step-check"></i>
+                    <span>Menerima bukti pembayaran</span>
+                </div>
+                <div class="loading-step" id="lstep2">
+                    <div class="step-icon">2</div>
+                    <div class="step-spinner"></div>
+                    <i class="fas fa-check step-check"></i>
+                    <span>Validasi data transaksi QRIS</span>
+                </div>
+                <div class="loading-step" id="lstep3">
+                    <div class="step-icon">3</div>
+                    <div class="step-spinner"></div>
+                    <i class="fas fa-check step-check"></i>
+                    <span>Memverifikasi kesesuaian nominal</span>
+                </div>
+                <div class="loading-step" id="lstep4">
+                    <div class="step-icon">4</div>
+                    <div class="step-spinner"></div>
+                    <i class="fas fa-check step-check"></i>
+                    <span>Mengkonfirmasi ke sistem pendaftaran</span>
+                </div>
+                <div class="loading-step" id="lstep5">
+                    <div class="step-icon">5</div>
+                    <div class="step-spinner"></div>
+                    <i class="fas fa-check step-check"></i>
+                    <span>Menyiapkan e-ticket peserta</span>
+                </div>
+            </div>
+
+            <p class="loading-note">
+                <i class="fas fa-lock"></i>
+                Transaksi Anda dienkripsi dan aman. Mohon jangan tutup halaman ini.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ===== VARIABEL GLOBAL =====
+        const rawData = localStorage.getItem('qrisrun_reg');
+        const mainContent = document.getElementById('mainContent');
+        let uploadedFile = null;
+        let isCheckboxChecked = false;
+        const formatRp = (n) => 'Rp ' + n.toLocaleString('id-ID');
+
+        // ===== CEK DATA =====
+        if (!rawData) {
+            mainContent.innerHTML = `
+                <div class="no-data">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h2>Data Tidak Ditemukan</h2>
+                    <p>Halaman ini memerlukan data pendaftaran. Silakan mulai dari halaman pendaftaran.</p>
+                    <a href="index.html"><i class="fas fa-arrow-left"></i> Kembali ke Pendaftaran</a>
+                </div>
+            `;
+        } else {
+            const data = JSON.parse(rawData);
+
+            mainContent.innerHTML = `
+                <!-- ORDER INFO -->
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <div class="left">
+                            <div class="icon-circle"><i class="fas fa-receipt"></i></div>
+                            <h3>Detail Pesanan</h3>
+                        </div>
+                        <span class="badge-status">Menunggu Bayar</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Order ID</span>
+                        <span class="value" style="font-family:monospace;font-size:12px;">${data.orderId}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Nama Peserta</span>
+                        <span class="value">${data.nama}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Kategori</span>
+                        <span class="value">Cirebon QRIS Run ${data.kategori}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Ukuran Jersey</span>
+                        <span class="value">${data.ukuran}</span>
+                    </div>
+                    <div class="detail-row total">
+                        <span class="label">Total Bayar</span>
+                        <span class="value">${formatRp(data.harga)}</span>
+                    </div>
+                </div>
+
+                <!-- QRIS -->
+                <div class="qris-card">
+                    <div class="qris-label">Scan QRIS di Bawah Ini</div>
+                    <div class="qris-img-wrapper">
+                        <img src="qris.png" alt="QR Code Pembayaran QRIS" onerror="this.style.display='none';this.parentElement.innerHTML+='<div style=\\'display:flex;flex-direction:column;align-items:center;gap:8px;\\'><i class=\\'fas fa-qrcode\\' style=\\'font-size:80px;color:#ccc;\\'></i><span style=\\'font-size:12px;color:#999;\\'>qris.png tidak ditemukan</span></div>';">
+                        <div class="scan-line"></div>
+                    </div>
+                    <div class="qris-amount">${formatRp(data.harga)}</div>
+                    <div class="qris-amount-label">Nominal yang harus dibayar</div>
+                </div>
+
+                <!-- UPLOAD BUKTI PEMBAYARAN -->
+                <div class="upload-card">
+                    <div class="section-head">
+                        <div class="icon-circle"><i class="fas fa-camera"></i></div>
+                        <h3>Upload Bukti Pembayaran</h3>
+                    </div>
+
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="fileInput" accept="image/*,.pdf" aria-label="Upload bukti pembayaran">
+
+                        <div class="upload-default">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p class="upload-text-main">Klik atau seret file ke sini</p>
+                            <p class="upload-text-sub">
+                                Format: JPG, PNG, JPEG, PDF &mdash; Maks. 5MB<br>
+                                Screenshot struk / bukti transfer dari aplikasi e-wallet
+                            </p>
+                        </div>
+
+                        <div class="upload-preview" id="uploadPreview">
+                            <img class="thumb" id="previewThumb" src="" alt="Preview bukti bayar">
+                            <div class="file-info">
+                                <div class="file-name" id="previewName">-</div>
+                                <div class="file-size" id="previewSize">-</div>
+                                <button class="btn-remove" type="button" id="btnRemoveFile" onclick="removeFile(event)">
+                                    <i class="fas fa-trash-alt"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upload-error" id="uploadError">
+                        <i class="fas fa-times-circle"></i>
+                        <span id="uploadErrorText">Wajib upload bukti pembayaran</span>
+                    </div>
+                </div>
+
+                <!-- CARA BAYAR -->
+                <div class="steps-card">
+                    <h3><i class="fas fa-list-ol"></i> Cara Membayar</h3>
+                    <div class="step-item">
+                        <span class="step-num">1</span>
+                        <span class="step-text">Buka aplikasi <strong>e-wallet</strong> atau <strong>mobile banking</strong> Anda</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-num">2</span>
+                        <span class="step-text">Pilih menu <strong>Scan QRIS</strong> atau <strong>Scan QR Code</strong></span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-num">3</span>
+                        <span class="step-text">Arahkan kamera ke <strong>QR Code</strong> di atas</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-num">4</span>
+                        <span class="step-text">Pastikan nominal: <strong>${formatRp(data.harga)}</strong>, lalu konfirmasi</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-num">5</span>
+                        <span class="step-text"><strong>Screenshot</strong> bukti pembayaran, lalu upload di atas</span>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-num">6</span>
+                        <span class="step-text">Centang pernyataan di bawah, lalu klik <strong>"Saya Sudah Bayar"</strong></span>
+                    </div>
+                </div>
+
+                <!-- WARNING -->
+                <div class="warning-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>
+                        <strong>Jangan tutup halaman ini</strong> sebelum proses selesai.
+                        Pastikan bukti pembayaran jelas terbaca (tidak buram, tidak terpotong).
+                    </p>
+                </div>
+
+                <!-- CHECKBOX KONFIRMASI -->
+                <div class="confirm-section">
+                    <label class="checkbox-wrapper" id="checkboxWrapper" for="confirmCheck">
+                        <input type="checkbox" id="confirmCheck">
+                        <div class="custom-check">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span class="checkbox-label">
+                            Saya menyatakan telah melakukan pembayaran sebesar <strong>${formatRp(data.harga)}</strong> melalui QRIS dan bukti pembayaran yang saya upload adalah <strong>asli serta dapat dipertanggungjawabkan</strong>.
+                        </span>
+                    </label>
+                    <div class="checkbox-error" id="checkboxError">
+                        <i class="fas fa-times-circle"></i>
+                        Anda harus mencentang pernyataan ini sebelum melanjutkan
+                    </div>
+                </div>
+
+                <!-- TOMBOL -->
+                <button class="btn-cta" id="btnPaid" disabled>
+                    <i class="fas fa-check-circle"></i>
+                    Saya Sudah Bayar
+                </button>
+                <button class="btn-cancel" id="btnCancel">
+                    <i class="fas fa-times"></i> Batalkan Pesanan
+                </button>
+            `;
+
+            // ===== EVENT LISTENERS SETELAH RENDER =====
+            setupUploadEvents();
+            setupCheckboxEvent();
+            setupButtonEvents();
+        }
+
+        // ===== UPLOAD LOGIC =====
+        function setupUploadEvents() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+
+            if (!fileInput) return;
+
+            // Drag & drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                if (e.dataTransfer.files.length > 0) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            // Click input
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    handleFile(fileInput.files[0]);
+                }
+            });
+        }
+
+        function handleFile(file) {
+            const uploadArea = document.getElementById('uploadArea');
+            const uploadError = document.getElementById('uploadError');
+            const errorText = document.getElementById('uploadErrorText');
+
+            // Validasi tipe
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+            if (!allowedTypes.includes(file.type)) {
+                errorText.textContent = 'Format file tidak didukung. Gunakan JPG, PNG, atau PDF.';
+                uploadError.classList.add('show');
+                return;
+            }
+
+            // Validasi ukuran (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                errorText.textContent = 'Ukuran file terlalu besar. Maksimal 5MB.';
+                uploadError.classList.add('show');
+                return;
+            }
+
+            // Hapus error
+            uploadError.classList.remove('show');
+
+            // Simpan file
+            uploadedFile = file;
+
+            // Tampilkan preview
+            const preview = document.getElementById('uploadPreview');
+            const thumb = document.getElementById('previewThumb');
+            const name = document.getElementById('previewName');
+            const size = document.getElementById('previewSize');
+
+            name.textContent = file.name;
+
+            if (file.size < 1024 * 1024) {
+                size.textContent = (file.size / 1024).toFixed(1) + ' KB';
+            } else {
+                size.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            }
+
+            if (file.type === 'application/pdf') {
+                thumb.src = '';
+                thumb.style.display = 'none';
+                // Buat placeholder PDF
+                thumb.parentElement.innerHTML = `
+                    <div style="width:72px;height:72px;border-radius:10px;background:#FEF2F2;border:2px solid #FECACA;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="fas fa-file-pdf" style="font-size:28px;color:#DC2626;"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name" id="previewName">${file.name}</div>
+                        <div class="file-size" id="previewSize">${file.size < 1024*1024 ? (file.size/1024).toFixed(1)+' KB' : (file.size/(1024*1024)).toFixed(2)+' MB'}</div>
+                        <button class="btn-remove" type="button" onclick="removeFile(event)">
+                            <i class="fas fa-trash-alt"></i> Hapus
+                        </button>
+                    </div>
+                `;
+            } else {
+                thumb.style.display = 'block';
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    thumb.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                preview.classList.add('show');
+            }
+
+            uploadArea.classList.add('has-file');
+            updateButtonState();
+        }
+
+        function removeFile(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            uploadedFile = null;
+
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+
+            uploadArea.classList.remove('has-file');
+            if (fileInput) fileInput.value = '';
+
+            // Reset tampilan upload
+            const preview = document.getElementById('uploadPreview');
+            if (preview) {
+                preview.classList.remove('show');
+                // Rebuild thumb element if needed
+                const parent = preview.parentElement;
+                const hasThumb = parent.querySelector('.thumb');
+                if (!hasThumb) {
+                    preview.innerHTML = `
+                        <img class="thumb" id="previewThumb" src="" alt="Preview bukti bayar">
+                        <div class="file-info">
+                            <div class="file-name" id="previewName">-</div>
+                            <div class="file-size" id="previewSize">-</div>
+                            <button class="btn-remove" type="button" id="btnRemoveFile" onclick="removeFile(event)">
+                                <i class="fas fa-trash-alt"></i> Hapus
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+            updateButtonState();
+        }
+
+        // ===== CHECKBOX LOGIC =====
+        function setupCheckboxEvent() {
+            const checkbox = document.getElementById('confirmCheck');
+            const wrapper = document.getElementById('checkboxWrapper');
+
+            if (!checkbox) return;
+
+            wrapper.addEventListener('click', (e) => {
+                // Toggle manual karena input hidden
+                if (e.target === checkbox) return;
+                e.preventDefault();
+                checkbox.checked = !checkbox.checked;
+                isCheckboxChecked = checkbox.checked;
+
+                if (checkbox.checked) {
+                    wrapper.classList.add('checked');
+                } else {
+                    wrapper.classList.remove('checked');
+                }
+
+                // Hapus error
+                document.getElementById('checkboxError').classList.remove('show');
+
+                updateButtonState();
+            });
+        }
+
+        // ===== UPDATE TOMBOL STATE =====
+        function updateButtonState() {
+            const btn = document.getElementById('btnPaid');
+            if (!btn) return;
+
+            if (uploadedFile && isCheckboxChecked) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        // ===== BUTTON EVENTS =====
+        function setupButtonEvents() {
+            const btnPaid = document.getElementById('btnPaid');
+            const btnCancel = document.getElementById('btnCancel');
+
+            if (btnPaid) {
+                btnPaid.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    // Validasi ulang
+                    let hasError = false;
+
+                    if (!uploadedFile) {
+                        document.getElementById('uploadError').classList.add('show');
+                        document.getElementById('uploadErrorText').textContent = 'Wajib upload bukti pembayaran';
+                        hasError = true;
+                    }
+
+                    if (!isCheckboxChecked) {
+                        document.getElementById('checkboxError').classList.add('show');
+                        hasError = true;
+                    }
+
+                    if (hasError) return;
+
+                    // Mulai premium loading
+                    startPremiumLoading();
+                });
+            }
+
+            if (btnCancel) {
+                btnCancel.addEventListener('click', () => {
+                    if (confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')) {
+                        localStorage.removeItem('qrisrun_reg');
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+
+        // ===== COUNTDOWN TIMER (15 MENIT) =====
+        let totalSeconds = 15 * 60;
+        let timerInterval = null;
+
+        function updateTimer() {
+            const m = Math.floor(totalSeconds / 60);
+            const s = totalSeconds % 60;
+            const display = document.getElementById('timerDisplay');
+            if (display) {
+                display.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+                if (totalSeconds <= 180) {
+                    display.style.color = '#DC2626';
+                    display.style.animation = 'pulseDot 0.8s ease-in-out infinite';
+                }
+            }
+
+            if (totalSeconds <= 0) {
+                clearInterval(timerInterval);
+                if (rawData) {
+                    const data = JSON.parse(rawData);
+                    data.status = 'expired';
+                    localStorage.setItem('qrisrun_reg', JSON.stringify(data));
+                }
+                window.location.href = 'pending.html';
+                return;
+            }
+            totalSeconds--;
+        }
+
+        timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // =============================================
+        //  PREMIUM LOADING — 3 MENIT (180 DETIK)
+        // =============================================
+        function startPremiumLoading() {
+            // Hentikan timer pembayaran
+            clearInterval(timerInterval);
+
+            // Update status di localStorage
+            if (rawData) {
+                const data = JSON.parse(rawData);
+                data.status = 'pending';
+                data.buktiBayar = uploadedFile ? uploadedFile.name : null;
+                localStorage.setItem('qrisrun_reg', JSON.stringify(data));
+            }
+
+            const overlay = document.getElementById('premiumLoading');
+            overlay.classList.add('show');
+
+            // Buat partikel
+            createParticles();
+
+            // Mulai progress
+            const DURATION = 180; // 3 menit
+            let elapsed = 0;
+
+            // Langkah dan waktunya (dalam detik dari 0)
+            const steps = [
+                { id: 'lstep1', start: 0, end: 25 },
+                { id: 'lstep2', start: 25, end: 65 },
+                { id: 'lstep3', start: 65, end: 110 },
+                { id: 'lstep4', start: 110, end: 150 },
+                { id: 'lstep5', start: 150, end: 178 },
+            ];
+
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressTime = document.getElementById('progressTime');
+
+            const loadingInterval = setInterval(() => {
+                elapsed++;
+
+                // Hitung persentase
+                const pct = Math.min(100, Math.round((elapsed / DURATION) * 100));
+                progressFill.style.width = pct + '%';
+                progressPercent.innerHTML = pct + '<span>%</span>';
+
+                // Sisa waktu
+                const remaining = DURATION - elapsed;
+                const rm = Math.floor(remaining / 60);
+                const rs = remaining % 60;
+                progressTime.textContent = rm + ':' + String(rs).padStart(2, '0') + ' tersisa';
+
+                // Update langkah
+                steps.forEach(step => {
+                    const el = document.getElementById(step.id);
+                    if (!el) return;
+                    el.classList.remove('active', 'done');
+                    if (elapsed >= step.end) {
+                        el.classList.add('done');
+                    } else if (elapsed >= step.start) {
+                        el.classList.add('active');
+                    }
+                });
+
+                // Selesai
+                if (elapsed >= DURATION) {
+                    clearInterval(loadingInterval);
+                    // Tandai semua step done
+                    steps.forEach(step => {
+                        const el = document.getElementById(step.id);
+                        if (el) {
+                            el.classList.remove('active');
+                            el.classList.add('done');
+                        }
+                    });
+                    progressFill.style.width = '100%';
+                    progressPercent.innerHTML = '100<span>%</span>';
+                    progressTime.textContent = 'Selesai';
+
+                    // Redirect setelah 1 detik jeda
+                    setTimeout(() => {
+                        window.location.href = 'pending.html';
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        // ===== BUAT PARTIKEL =====
+        function createParticles() {
+            const container = document.getElementById('loadingParticles');
+            container.innerHTML = '';
+
+            const count = 40;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const x = Math.random() * 100;
+                const size = Math.random() * 3 + 1;
+                const duration = Math.random() * 8 + 6;
+                const delay = Math.random() * 10;
+                const opacity = Math.random() * 0.4 + 0.1;
+
+                // Warna acak hijau/emas
+                const isGold = Math.random() > 0.7;
+                const color = isGold
+                    ? `rgba(240, 199, 94, ${opacity})`
+                    : `rgba(39, 168, 74, ${opacity})`;
+
+                p.style.cssText = `
+                    left: ${x}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    animation-duration: ${duration}s;
+                    animation-delay: ${delay}s;
+                    box-shadow: 0 0 ${size * 2}px ${color};
+                `;
+                container.appendChild(p);
+            }
+        }
+    </script>
+</body>
+</html>
