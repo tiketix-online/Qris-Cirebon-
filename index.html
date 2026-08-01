@@ -1,1 +1,1164 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi Kuota Extra - CIREBON QRIS RUN 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --green-deep: #0D5A2D;
+            --green-mid: #1B7A3D;
+            --green-light: #27A84A;
+            --gold: #D4A017;
+            --gold-light: #F0C75E;
+            --gold-pale: #FFF8E1;
+            --cream: #FFFDF5;
+            --white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            --red: #DC2626;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --shadow-glow-green: 0 0 30px rgba(27,122,61,0.15);
+            --shadow-glow-gold: 0 0 30px rgba(212,160,23,0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== BACKGROUND PATTERN ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(27,122,61,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212,160,23,0.04) 0%, transparent 50%),
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(27,122,61,0.015) 35px, rgba(27,122,61,0.015) 36px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(212,160,23,0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatGlow 6s ease-in-out infinite;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%; left: -10%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatGlow 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatGlow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -15px) scale(1.1); }
+        }
+
+        .header-inner {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 32px 24px 28px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(212,160,23,0.2);
+            border: 1px solid rgba(212,160,23,0.4);
+            color: var(--gold-light);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+            animation: fadeSlideDown 0.6s ease-out;
+        }
+
+        .header-badge i { font-size: 10px; }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 32px;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 4px;
+            animation: fadeSlideDown 0.6s ease-out 0.1s both;
+        }
+
+        .header-title .gold {
+            color: var(--gold-light);
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            animation: fadeSlideDown 0.6s ease-out 0.2s both;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            animation: fadeSlideDown 0.6s ease-out 0.3s both;
+        }
+
+        .header-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255,255,255,0.85);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .header-meta-item i {
+            color: var(--gold-light);
+            font-size: 13px;
+        }
+
+        /* ===== QUOTA BANNER ===== */
+        .quota-banner {
+            background: linear-gradient(90deg, #FEF3C7, #FDE68A, #FEF3C7);
+            border-bottom: 2px solid var(--gold);
+            padding: 10px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .quota-banner p {
+            font-size: 13px;
+            font-weight: 700;
+            color: #92400E;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .quota-banner .pulse-dot {
+            width: 8px; height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.4); }
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .main-container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== FORM CARD ===== */
+        .form-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg), var(--shadow-glow-green);
+            border: 1px solid rgba(27,122,61,0.08);
+            overflow: hidden;
+            animation: fadeSlideUp 0.7s ease-out 0.2s both;
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeSlideDown {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-section {
+            padding: 24px 24px 0;
+        }
+
+        .form-section:last-child {
+            padding-bottom: 24px;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--green-deep);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--green-light);
+        }
+
+        .section-label .step-num {
+            width: 24px; height: 24px;
+            background: var(--green-mid);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* ===== FORM FIELDS ===== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .form-group label .required {
+            color: var(--red);
+            margin-left: 2px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background: var(--white);
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--green-mid);
+            box-shadow: 0 0 0 3px rgba(27,122,61,0.1);
+        }
+
+        .form-input::placeholder {
+            color: #B0B8C4;
+        }
+
+        .form-input.error {
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(220,38,38,0.08);
+        }
+
+        .error-msg {
+            font-size: 11px;
+            color: var(--red);
+            margin-top: 4px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .error-msg.show {
+            display: flex;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ===== CATEGORY CARDS ===== */
+        .category-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .category-card {
+            position: relative;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--white);
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: rgba(27,122,61,0.3);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .category-card.selected {
+            border-color: var(--green-mid);
+            background: linear-gradient(180deg, rgba(27,122,61,0.04) 0%, var(--white) 100%);
+            box-shadow: var(--shadow-glow-green);
+        }
+
+        .category-card.selected::before {
+            background: linear-gradient(90deg, var(--green-mid), var(--green-light));
+        }
+
+        .category-card .check-icon {
+            position: absolute;
+            top: 10px; right: 10px;
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 11px;
+            color: transparent;
+        }
+
+        .category-card.selected .check-icon {
+            background: var(--green-mid);
+            border-color: var(--green-mid);
+            color: var(--white);
+        }
+
+        .category-dist {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--green-deep);
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .category-card.selected .category-dist {
+            color: var(--green-mid);
+        }
+
+        .category-unit {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .category-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .category-price-small {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ===== GENDER RADIO ===== */
+        .radio-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .radio-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .radio-option input {
+            position: absolute;
+            opacity: 0;
+            width: 0; height: 0;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .radio-option input:checked + .radio-label {
+            border-color: var(--green-mid);
+            color: var(--green-deep);
+            background: rgba(27,122,61,0.05);
+        }
+
+        /* ===== JERSEY SIZE ===== */
+        .size-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            position: relative;
+        }
+
+        .size-option input {
+            position: absolute;
+            opacity: 0;
+            width: 0; height: 0;
+        }
+
+        .size-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px; height: 42px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .size-option input:checked + .size-label {
+            border-color: var(--green-mid);
+            background: var(--green-mid);
+            color: var(--white);
+        }
+
+        /* ===== SUMMARY ===== */
+        .summary-box {
+            background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+            border-radius: 14px;
+            padding: 20px;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-box::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 120px; height: 120px;
+            background: rgba(212,160,23,0.1);
+            border-radius: 50%;
+        }
+
+        .summary-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 12px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 13px;
+        }
+
+        .summary-row .label {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .summary-row.total {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: 8px;
+            padding-top: 12px;
+        }
+
+        .summary-row.total .value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--gold-light);
+        }
+
+        /* ===== CHECKBOX ===== */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px; height: 18px;
+            margin-top: 1px;
+            accent-color: var(--green-mid);
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .checkbox-group label a {
+            color: var(--green-mid);
+            text-decoration: underline;
+        }
+
+        /* ===== SUBMIT BUTTON ===== */
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--gold) 0%, #B8860B 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 16px rgba(212,160,23,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212,160,23,0.45);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 16px 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--green-deep);
+            margin-bottom: 4px;
+        }
+
+        .footer-text {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .footer-text a {
+            color: var(--green-mid);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--red);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== LOADING OVERLAY ===== */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-box {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 32px 40px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .spinner {
+            width: 40px; height: 40px;
+            border: 4px solid var(--border);
+            border-top-color: var(--green-mid);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 14px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-box p {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .header-title { font-size: 24px; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-section { padding: 20px 16px 0; }
+            .form-section:last-child { padding-bottom: 20px; }
+            .category-dist { font-size: 28px; }
+            .header-meta { gap: 12px; }
+            .header-meta-item { font-size: 11px; }
+        }
+
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="toastMsg">Pesanan error</span>
+    </div>
+
+    <!-- LOADING OVERLAY -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <p>Memproses pendaftaran...</p>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-badge">
+                <i class="fas fa-bolt"></i>
+                KUOTA EXTRA TAMBAHAN
+            </div>
+            <h1 class="header-title">
+                CIREBON <span class="gold">QRIS RUN</span> 2026
+            </h1>
+            <p class="header-subtitle">TRIKARSA FEST &mdash; Grage Mall, Cirebon</p>
+            <div class="header-meta">
+                <div class="header-meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    14 - 17 Agustus 2026
+                </div>
+                <div class="header-meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Cirebon, Jawa Barat
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- QUOTA BANNER -->
+    <div class="quota-banner">
+        <p>
+            <span class="pulse-dot"></span>
+            Kuota Extra Terbatas &mdash; Segera Daftar Sebelum Kehabisan!
+        </p>
+    </div>
+
+    <!-- MAIN -->
+    <main class="main-container">
+        <form class="form-card" id="regForm" novalidate>
+
+            <!-- DATA PESERTA -->
+            <div class="form-section">
+                <div class="section-label">
+                    <span class="step-num">1</span>
+                    Data Peserta
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Lengkap <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="nama" placeholder="Sesuai KTP" required autocomplete="name">
+                    <div class="error-msg" id="errNama"><i class="fas fa-times-circle"></i> Nama lengkap wajib diisi</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>No. WhatsApp <span class="required">*</span></label>
+                        <input type="tel" class="form-input" id="whatsapp" placeholder="08xxxxxxxxxx" required autocomplete="tel">
+                        <div class="error-msg" id="errWhatsapp"><i class="fas fa-times-circle"></i> No. WhatsApp tidak valid</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" class="form-input" id="email" placeholder="email@contoh.com" required autocomplete="email">
+                        <div class="error-msg" id="errEmail"><i class="fas fa-times-circle"></i> Format email tidak valid</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>No. KTP / NIK <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="nik" placeholder="16 digit NIK" maxlength="16" required inputmode="numeric">
+                        <div class="error-msg" id="errNik"><i class="fas fa-times-circle"></i> NIK harus 16 digit</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Lahir <span class="required">*</span></label>
+                        <input type="date" class="form-input" id="tgllahir" required>
+                        <div class="error-msg" id="errTgllahir"><i class="fas fa-times-circle"></i> Tanggal lahir wajib diisi</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Jenis Kelamin <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" name="gender" id="genderL" value="Laki-laki" required>
+                            <label for="genderL" class="radio-label"><i class="fas fa-mars"></i> Laki-laki</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="gender" id="genderP" value="Perempuan">
+                            <label for="genderP" class="radio-label"><i class="fas fa-venus"></i> Perempuan</label>
+                        </div>
+                    </div>
+                    <div class="error-msg" id="errGender"><i class="fas fa-times-circle"></i> Pilih jenis kelamin</div>
+                </div>
+            </div>
+
+            <!-- KATEGORI LARI -->
+            <div class="form-section">
+                <div class="section-label">
+                    <span class="step-num">2</span>
+                    Pilih Kategori
+                </div>
+
+                <div class="category-options" id="categoryOptions">
+                    <div class="category-card" data-cat="5K" data-price="81000" onclick="selectCategory(this)">
+                        <div class="check-icon"><i class="fas fa-check"></i></div>
+                        <div class="category-dist">5K</div>
+                        <div class="category-unit">~ 5.23 km</div>
+                        <div class="category-price">Rp 81.000</div>
+                        <div class="category-price-small">Biaya registrasi</div>
+                    </div>
+                    <div class="category-card" data-cat="10K" data-price="131000" onclick="selectCategory(this)">
+                        <div class="check-icon"><i class="fas fa-check"></i></div>
+                        <div class="category-dist">10K</div>
+                        <div class="category-unit">~ 10.11 km</div>
+                        <div class="category-price">Rp 131.000</div>
+                        <div class="category-price-small">Biaya registrasi</div>
+                    </div>
+                </div>
+                <div class="error-msg" id="errCategory" style="margin-top:6px;"><i class="fas fa-times-circle"></i> Pilih salah satu kategori</div>
+            </div>
+
+            <!-- UKURAN JERSEY -->
+            <div class="form-section">
+                <div class="section-label">
+                    <span class="step-num">3</span>
+                    Ukuran Jersey
+                </div>
+
+                <div class="size-options" id="sizeOptions">
+                    <div class="size-option">
+                        <input type="radio" name="ukuran" id="sizeS" value="S">
+                        <label for="sizeS" class="size-label">S</label>
+                    </div>
+                    <div class="size-option">
+                        <input type="radio" name="ukuran" id="sizeM" value="M">
+                        <label for="sizeM" class="size-label">M</label>
+                    </div>
+                    <div class="size-option">
+                        <input type="radio" name="ukuran" id="sizeL" value="L">
+                        <label for="sizeL" class="size-label">L</label>
+                    </div>
+                    <div class="size-option">
+                        <input type="radio" name="ukuran" id="sizeXL" value="XL">
+                        <label for="sizeXL" class="size-label">XL</label>
+                    </div>
+                    <div class="size-option">
+                        <input type="radio" name="ukuran" id="sizeXXL" value="XXL">
+                        <label for="sizeXXL" class="size-label">XXL</label>
+                    </div>
+                </div>
+                <div class="error-msg" id="errSize" style="margin-top:6px;"><i class="fas fa-times-circle"></i> Pilih ukuran jersey</div>
+            </div>
+
+            <!-- ALAMAT PENGIRIMAN -->
+            <div class="form-section">
+                <div class="section-label">
+                    <span class="step-num">4</span>
+                    Alamat Pengiriman
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat Lengkap <span class="required">*</span></label>
+                    <textarea class="form-input" id="alamat" rows="3" placeholder="Jl. Contoh No. 123, Kelurahan, Kecamatan, Kota" required style="resize:vertical;min-height:70px;"></textarea>
+                    <div class="error-msg" id="errAlamat"><i class="fas fa-times-circle"></i> Alamat pengiriman wajib diisi</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kota / Kabupaten <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="kota" placeholder="Contoh: Kota Cirebon" required>
+                        <div class="error-msg" id="errKota"><i class="fas fa-times-circle"></i> Kota wajib diisi</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Kode Pos</label>
+                        <input type="text" class="form-input" id="kodepos" placeholder="451xx" maxlength="5" inputmode="numeric">
+                    </div>
+                </div>
+            </div>
+
+            <!-- RINGKASAN -->
+            <div class="form-section">
+                <div class="summary-box" id="summaryBox">
+                    <div class="summary-title">Ringkasan Pembayaran</div>
+                    <div class="summary-row">
+                        <span class="label">Kategori</span>
+                        <span class="value" id="sumCategory">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Biaya Registrasi</span>
+                        <span class="value" id="sumPrice">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Biaya Admin</span>
+                        <span class="value">Rp 0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span class="label">Total Bayar</span>
+                        <span class="value" id="sumTotal">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PERSSETUJUAN -->
+            <div class="form-section">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agree">
+                    <label for="agree">
+                        Saya menyetujui <a href="#" onclick="return false;">syarat & ketentuan</a> serta
+                        <a href="#" onclick="return false;">kebijakan privasi</a> Cirebon QRIS Run 2026.
+                        Data yang saya isi adalah benar dan dapat dipertanggungjawabkan.
+                    </label>
+                </div>
+                <div class="error-msg" id="errAgree"><i class="fas fa-times-circle"></i> Anda harus menyetujui syarat & ketentuan</div>
+
+                <button type="submit" class="btn-submit" id="btnSubmit">
+                    <i class="fas fa-arrow-right"></i>
+                    Lanjut ke Pembayaran QRIS
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-logo">TRIKARSA FEST 2026</div>
+        <p class="footer-text">
+            Diselenggarakan oleh Bank Indonesia &mdash; <a href="https://cirebonqrisrun.id" target="_blank">cirebonqrisrun.id</a>
+        </p>
+    </footer>
+
+    <script>
+        // ===== STATE =====
+        let selectedCategory = null;
+        let selectedPrice = 0;
+
+        // ===== SELECT CATEGORY =====
+        function selectCategory(card) {
+            // Hapus selected semua
+            document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+            // Tandai yang dipilih
+            card.classList.add('selected');
+            selectedCategory = card.dataset.cat;
+            selectedPrice = parseInt(card.dataset.price);
+            // Update ringkasan
+            updateSummary();
+            // Hapus error
+            hideError('errCategory');
+        }
+
+        // ===== UPDATE SUMMARY =====
+        function updateSummary() {
+            const formatRp = (n) => 'Rp ' + n.toLocaleString('id-ID');
+            document.getElementById('sumCategory').textContent = selectedCategory ? `Cirebon QRIS Run ${selectedCategory}` : '-';
+            document.getElementById('sumPrice').textContent = selectedPrice ? formatRp(selectedPrice) : '-';
+            document.getElementById('sumTotal').textContent = selectedPrice ? formatRp(selectedPrice) : '-';
+        }
+
+        // ===== ERROR HELPERS =====
+        function showError(id) {
+            const el = document.getElementById(id);
+            el.classList.add('show');
+            // Tandai input terkait
+            const input = el.previousElementSibling;
+            if (input && (input.classList.contains('form-input') || input.tagName === 'DIV')) {
+                const inp = input.querySelector('.form-input') || input;
+                if (inp.classList) inp.classList.add('error');
+            }
+        }
+
+        function hideError(id) {
+            const el = document.getElementById(id);
+            el.classList.remove('show');
+            const input = el.previousElementSibling;
+            if (input) {
+                const inp = input.querySelector('.form-input') || input;
+                if (inp.classList) inp.classList.remove('error');
+            }
+        }
+
+        // Hapus error saat user mengetik
+        document.querySelectorAll('.form-input').forEach(inp => {
+            inp.addEventListener('input', () => {
+                const errEl = inp.parentElement.querySelector('.error-msg');
+                if (errEl) {
+                    errEl.classList.remove('show');
+                    inp.classList.remove('error');
+                }
+            });
+        });
+
+        // Hapus error saat pilih radio/size
+        document.querySelectorAll('input[name="gender"]').forEach(r => r.addEventListener('change', () => hideError('errGender')));
+        document.querySelectorAll('input[name="ukuran"]').forEach(r => r.addEventListener('change', () => hideError('errSize')));
+        document.getElementById('agree').addEventListener('change', () => hideError('errAgree'));
+
+        // ===== TOAST =====
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3500);
+        }
+
+        // ===== FORMAT CURRENCY =====
+        function formatRp(n) {
+            return 'Rp ' + n.toLocaleString('id-ID');
+        }
+
+        // ===== GENERATE ORDER ID =====
+        function generateOrderId() {
+            const now = new Date();
+            const y = now.getFullYear().toString().slice(-2);
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const h = String(now.getHours()).padStart(2, '0');
+            const min = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const rand = Math.floor(Math.random() * 9000) + 1000;
+            return `CQR${y}${m}${d}${h}${min}${s}${rand}`;
+        }
+
+        // ===== VALIDATE & SUBMIT =====
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let valid = true;
+
+            // Nama
+            const nama = document.getElementById('nama').value.trim();
+            if (!nama) { showError('errNama'); valid = false; } else { hideError('errNama'); }
+
+            // WhatsApp
+            const wa = document.getElementById('whatsapp').value.trim();
+            if (!/^(\+62|62|0)8[1-9][0-9]{6,11}$/.test(wa.replace(/[\s\-]/g, ''))) {
+                showError('errWhatsapp'); valid = false;
+            } else { hideError('errWhatsapp'); }
+
+            // Email
+            const em = document.getElementById('email').value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { showError('errEmail'); valid = false; } else { hideError('errEmail'); }
+
+            // NIK
+            const nik = document.getElementById('nik').value.trim();
+            if (!/^\d{16}$/.test(nik)) { showError('errNik'); valid = false; } else { hideError('errNik'); }
+
+            // Tanggal Lahir
+            const tgl = document.getElementById('tgllahir').value;
+            if (!tgl) { showError('errTgllahir'); valid = false; } else { hideError('errTgllahir'); }
+
+            // Gender
+            const gender = document.querySelector('input[name="gender"]:checked');
+            if (!gender) { showError('errGender'); valid = false; } else { hideError('errGender'); }
+
+            // Category
+            if (!selectedCategory) { showError('errCategory'); valid = false; } else { hideError('errCategory'); }
+
+            // Ukuran
+            const ukuran = document.querySelector('input[name="ukuran"]:checked');
+            if (!ukuran) { showError('errSize'); valid = false; } else { hideError('errSize'); }
+
+            // Alamat
+            const alamat = document.getElementById('alamat').value.trim();
+            if (!alamat) { showError('errAlamat'); valid = false; } else { hideError('errAlamat'); }
+
+            // Kota
+            const kota = document.getElementById('kota').value.trim();
+            if (!kota) { showError('errKota'); valid = false; } else { hideError('errKota'); }
+
+            // Agree
+            if (!document.getElementById('agree').checked) { showError('errAgree'); valid = false; } else { hideError('errAgree'); }
+
+            if (!valid) {
+                showToast('Mohon lengkapi semua data yang wajib diisi');
+                // Scroll ke error pertama
+                const firstErr = document.querySelector('.error-msg.show');
+                if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // ===== SIMPAN KE LOCALSTORAGE =====
+            const orderId = generateOrderId();
+            const data = {
+                orderId: orderId,
+                nama: nama,
+                whatsapp: wa,
+                email: em,
+                nik: nik,
+                tanggalLahir: tgl,
+                gender: gender.value,
+                kategori: selectedCategory,
+                harga: selectedPrice,
+                ukuran: ukuran.value,
+                alamat: alamat,
+                kota: kota,
+                kodepos: document.getElementById('kodepos').value.trim(),
+                waktuDaftar: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            localStorage.setItem('qrisrun_reg', JSON.stringify(data));
+
+            // Loading lalu redirect
+            document.getElementById('loadingOverlay').classList.add('show');
+            setTimeout(() => {
+                window.location.href = 'qris.html';
+            }, 1200);
+        });
+
+        // ===== NIK HANYA ANGKA =====
+        document.getElementById('nik').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 16);
+        });
+
+        // ===== KODE POS HANYA ANGKA =====
+        document.getElementById('kodepos').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 5);
+        });
+    </script>
+</body>
+</html>
